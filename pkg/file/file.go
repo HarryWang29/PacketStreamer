@@ -1,8 +1,6 @@
 package file
 
 import (
-	"bufio"
-	"github.com/deepfence/PacketStreamer/pkg/config"
 	"io"
 	"log"
 	"os"
@@ -11,6 +9,8 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	"github.com/deepfence/PacketStreamer/pkg/config"
 )
 
 type FileOutput struct {
@@ -153,7 +153,6 @@ func (o *FileOutput) Write(p []byte) (n int, err error) {
 
 func (o *FileOutput) closeLocked() error {
 	if o.file != nil {
-		o.writer.(*bufio.Writer).Flush()
 		o.file.Close()
 	}
 
