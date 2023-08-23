@@ -37,7 +37,8 @@ type InputConfig struct {
 }
 
 type FileOutputConfig struct {
-	Path string
+	Path      string
+	SizeLimit int64 `yaml:"sizeLimit,omitempty"`
 }
 
 type ServerOutputConfig struct {

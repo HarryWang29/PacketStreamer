@@ -6,7 +6,6 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/deepfence/PacketStreamer/pkg/file"
 	kafka "github.com/segmentio/kafka-go"
 )
 
@@ -48,7 +47,7 @@ func TestPluginStart(t *testing.T) {
 					Partition: 0,
 					Offset:    0,
 					Key:       []byte("test"),
-					Value:     []byte(fmt.Sprintf("%sregu", file.Header)),
+					Value:     []byte(fmt.Sprintf("%sregu", Header)),
 				},
 				{
 					Topic:     "test",
@@ -77,7 +76,7 @@ func TestPluginStart(t *testing.T) {
 					Partition: 0,
 					Offset:    0,
 					Key:       []byte("test"),
-					Value:     []byte(fmt.Sprintf("%sThis is a message that's not long enough", file.Header)),
+					Value:     []byte(fmt.Sprintf("%sThis is a message that's not long enough", Header)),
 				},
 			},
 		},
@@ -92,7 +91,7 @@ func TestPluginStart(t *testing.T) {
 					Partition: 0,
 					Offset:    0,
 					Key:       []byte("test"),
-					Value:     []byte(fmt.Sprintf("%sHello, the secon", file.Header)),
+					Value:     []byte(fmt.Sprintf("%sHello, the secon", Header)),
 				},
 				{
 					Topic:     "test",
@@ -146,7 +145,7 @@ func TestPluginStart(t *testing.T) {
 
 func getFileSizeFromMessages(t *testing.T, sentMessages []string) uint64 {
 	t.Helper()
-	var fileSize uint64 = uint64(len(file.Header))
+	var fileSize uint64 = uint64(len(Header))
 
 	for _, m := range sentMessages {
 		fileSize += uint64(len(m))

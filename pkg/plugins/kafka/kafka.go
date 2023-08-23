@@ -6,10 +6,11 @@ import (
 	"time"
 
 	"github.com/deepfence/PacketStreamer/pkg/config"
-	"github.com/deepfence/PacketStreamer/pkg/file"
 	"github.com/google/uuid"
 	kafka "github.com/segmentio/kafka-go"
 )
+
+var Header = []byte{0xde, 0xef, 0xec, 0xe0}
 
 type KafkaWriter interface {
 	WriteMessages(ctx context.Context, msgs ...kafka.Message) error
@@ -74,10 +75,10 @@ func (p *Plugin) newFile(id string, messageSize int) {
 		Buffer: make([]byte, 0, messageSize),
 	}
 
-	p.CurrentFile.Buffer = append(p.CurrentFile.Buffer, file.Header...)
+	p.CurrentFile.Buffer = append(p.CurrentFile.Buffer, Header...)
 }
 
-//Start produces Kafka messages containing data that is written to the returned channel
+// Start produces Kafka messages containing data that is written to the returned channel
 func (p *Plugin) Start(ctx context.Context) chan<- string {
 	inputChan := make(chan string)
 	go func() {
@@ -134,7 +135,7 @@ func (p *Plugin) Start(ctx context.Context) chan<- string {
 
 func (p *Plugin) cleanup() {
 	// we only need to clean up if there's actually data to send
-	if len(p.CurrentFile.Buffer) > len(file.Header) {
+	if len(p.CurrentFile.Buffer) > len(Header) {
 		err := p.flush()
 		if err != nil {
 			//TODO: handle this better
